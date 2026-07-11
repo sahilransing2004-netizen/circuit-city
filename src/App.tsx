@@ -5,6 +5,8 @@ import * as THREE from 'three'
 import gsap from 'gsap'
 import Vehicle from './Vehicle'
 import FollowCamera from './FollowCamera'
+import Terrain from './Terrain'
+import Props from './Props'
 import Zone from './Zone'
 
 const zoneContent: Record<string, { title: string; body: string }> = {
@@ -78,17 +80,14 @@ function App() {
       )}
 
       <Canvas camera={{ position: [0, 5, 8], fov: 50 }}>
+        <color attach="background" args={['#0b1220']} />
+        <fog attach="fog" args={['#0b1220', 30, 90]} />
         <ambientLight intensity={0.6} />
         <directionalLight position={[5, 10, 5]} intensity={1} />
 
         <Physics gravity={[0, -9.81, 0]}>
-          <RigidBody type="fixed">
-            <mesh rotation={[-Math.PI / 2, 0, 0]}>
-              <planeGeometry args={[60, 60]} />
-              <meshStandardMaterial color="#334155" />
-            </mesh>
-          </RigidBody>
-
+         <Terrain />
+         <Props />
           <Vehicle
             onUpdate={(pos, rotY) => {
               vehiclePos.current.copy(pos)
